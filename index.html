@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Matrix Dashboard</title>
+        <link rel="stylesheet" href="stylesheet.css?v=parallel-oracle-3" />
+    </head>
+    <body>
+        <!-- Background music (hidden, auto-plays on load) -->
+        <audio id="backgroundAudio" loop playsinline muted>
+            <source src="MP3.mp3" type="audio/mpeg" />
+        </audio>
+
+        <div class="dock">
+            <div class="panel col" id="agentsPanel">
+                <h3 class="section-title">THE OPERATOR</h3>
+                <div
+                    class="list"
+                    id="agentsList"
+                    style="
+                        display: flex;
+                        flex-direction: column;
+                        height: 100%;
+                        gap: 1px;
+                    "
+                >
+                    <div class="agent-card card active">
+                        <div class="agent-meta">
+                            <div class="agent-name">NEO</div>
+                            <div class="agent-status" id="neo-status">
+                                Status: IDLE
+                            </div>
+                            <div class="agent-progress">
+                                <i id="neo-prog" style="width: 0%"></i>
+                            </div>
+                        </div>
+                        <div class="agent-code-window">
+                            <div class="code-lines">
+                                <div class="code-line">
+                                    function analyzeTarget(target){
+                                </div>
+                                <div class="code-line">
+                                    &nbsp;&nbsp;return target.scan();
+                                </div>
+                                <div class="code-line">}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="agent-card card active">
+                        <div class="agent-meta">
+                            <div class="agent-name">TRINITY</div>
+                            <div class="agent-status" id="trinity-status">
+                                Status: IDLE
+                            </div>
+                            <div class="agent-progress">
+                                <i id="trinity-prog" style="width: 0%"></i>
+                            </div>
+                        </div>
+                        <div class="agent-code-window">
+                            <div class="code-lines">
+                                <div class="code-line">
+                                    // decrypting... [|||||||||]
+                                </div>
+                                <div class="code-line">
+                                    status: WAITING_FOR_INPUT
+                                </div>
+                                <div class="code-line">memory: 78%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="agent-card card active">
+                        <div class="agent-meta">
+                            <div class="agent-name">MORPHEUS</div>
+                            <div class="agent-status" id="morpheus-status">
+                                Status: IDLE
+                            </div>
+                            <div class="agent-progress">
+                                <i id="morpheus-prog" style="width: 0%"></i>
+                            </div>
+                        </div>
+                        <div class="agent-code-window">
+                            <div class="code-lines">
+                                <div class="code-line">
+                                    protocol: MASTER_PLAN_ACTIVE
+                                </div>
+                                <div class="code-line">
+                                    target: smith.status=neutralized
+                                </div>
+                                <div class="code-line">
+                                    await next_command();
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel col" id="leftPanel">
+                <h3 class="section-title">OPERATIONS</h3>
+                <div class="list" id="taskQueue"></div>
+            </div>
+
+            <div class="panel col center-col">
+                <div class="panel oracle-panel" id="oraclePanel">
+                    <div
+                        style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            gap: 1px;
+                        "
+                    >
+                        <div class="oracle-title">THE ORACLE</div>
+                        <div
+                            style="
+                                color: var(--muted);
+                                font-family: var(--mono);
+                                font-size: 12px;
+                                display: flex;
+                                align-items: center;
+                                gap: 1px;
+                            "
+                        >
+                            VALIDATION & CONTROL
+                        </div>
+                    </div>
+                    <div class="oracle-feed list" id="oracleFeed"></div>
+                </div>
+
+                <div class="panel architect-card" id="architectPanel">
+                    <div class="architect-header">
+                        <div class="architect-title">THE ARCHITECT</div>
+                        <div class="architect-controls">
+                            <button
+                                class="btn-ghost focus-outline"
+                                id="openSettings"
+                            >
+                                ⚙
+                            </button>
+                            <div
+                                class="icon focus-outline"
+                                id="micBtn"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Mic"
+                            >
+                                🎤
+                            </div>
+                        </div>
+                    </div>
+                    <div class="architect-work">
+                        <div class="thinking-window" id="architectThinking">
+                            <div class="architect-process-indicator">
+                                <div class="process-dot"></div>
+                                <div class="process-dot"></div>
+                                <div class="process-dot"></div>
+                                <div class="process-dot"></div>
+                            </div>
+                            <div id="history">
+                                <div
+                                    style="
+                                        color: var(--muted);
+                                        margin-bottom: 6px;
+                                    "
+                                >
+                                    Analyzing full-stack requirements and
+                                    dependency resolution...
+                                    <span class="pulse"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-window">
+                            <textarea
+                                id="chatInput"
+                                class="chat-input focus-outline"
+                                placeholder="Give The Architect an operation..."
+                            ></textarea>
+                            <div class="chat-actions">
+                                <button
+                                    class="btn-ghost focus-outline"
+                                    id="sendBtn"
+                                >
+                                    Send
+                                </button>
+                                <button
+                                    class="btn-ghost focus-outline"
+                                    id="pauseBtn"
+                                >
+                                    Pause Agents
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel col" id="rightPanel">
+                <h3 class="section-title">OPERATIONS COMPLETED</h3>
+                <div class="list" id="resultList"></div>
+            </div>
+
+            <div class="panel col" id="filesPanel">
+                <h3 class="section-title">ZION FILE CONTROL</h3>
+                <div class="list" id="fileList">
+                    <div
+                        style="
+                            color: var(--muted);
+                            font-size: 12px;
+                            padding: 1px;
+                        "
+                    >
+                        Project Folder selected.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="packetLayer"></div>
+
+        <div
+            class="modal-backdrop"
+            id="modalBackdrop"
+            role="dialog"
+            aria-modal="true"
+        >
+            <div class="modal">
+                <h2>Simulation Settings</h2>
+                <div class="form-row">
+                    <div style="flex: 1">
+                        <label>Model</label
+                        ><select class="select">
+                            <option>local-llama.cpp (default)</option>
+                            <option>custom-model</option>
+                        </select>
+                    </div>
+                    <div style="width: 120px">
+                        <label>Context</label
+                        ><input type="number" value="2048" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div style="flex: 1">
+                        <label>System Prompt</label
+                        ><input
+                            type="text"
+                            value="You are Architect: plan tasks and delegate to agents."
+                        />
+                    </div>
+                    <div style="width: 120px">
+                        <label>Temperature</label
+                        ><input type="number" step="0.1" value="0.2" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div
+                        style="
+                            flex: 1;
+                            display: flex;
+                            align-items: center;
+                            gap: 1px;
+                        "
+                    >
+                        <label for="volumeSlider">Music Volume <span id="volumePercent">25%</span></label
+                        ><input
+                            type="range"
+                            id="volumeSlider"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            value="0.25"
+                        />
+                    </div>
+                    <button
+                        class="icon"
+                        id="muteBtn"
+                        aria-label="Toggle mute"
+                        title="Mute/Unmute music"
+                    >
+                        🔇
+                    </button>
+                </div>
+                <p class="fan-notice">This is an unofficial, non-commercial fan project created for creative and educational purposes. All third-party names, characters, trademarks, and related material remain the property of their respective rights holders. No affiliation or endorsement is implied. You are welcome to use, modify, and build upon this project's original code; this permission does not extend to third-party material.</p>
+                <div style="display: flex; gap: 1px; justify-content: flex-end">
+                    <button class="btn-ghost focus-outline" id="modalCancel">
+                        Cancel
+                    </button>
+                    <button class="btn-ghost focus-outline" id="modalSave">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="matrixCanvas" class="matrix-canvas"></canvas>
+
+        <script src="script.js?v=parallel-oracle-3"></script>
+    </body>
+</html>
